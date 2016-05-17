@@ -1,2 +1,2 @@
-# PM-MS-PluginExample
-This is an example for PocketMine-ManagerServer Example
+# PM-MS-Plugins
+This is a collections of plugins for PocketMine-ManagerServers!
