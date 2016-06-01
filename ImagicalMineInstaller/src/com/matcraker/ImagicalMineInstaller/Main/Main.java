@@ -7,13 +7,11 @@ import com.matcracker.PMManagerServers.API.PluginInformation;
 import com.matcracker.PMManagerServers.API.PluginStarter;
 import com.matcracker.PMManagerServers.API.StatusAPI;
 import com.matcracker.PMManagerServers.API.UtilityServersAPI;
-import com.matcracker.PMManagerServers.Installer.ManagerInstaller;
-import com.matcracker.PMManagerServers.Languages.BaseLang;
-import com.matcracker.PMManagerServers.Settings.PluginManager;
-import com.matcracker.PMManagerServers.Utility.FileChooser;
-import com.matcracker.PMManagerServers.Utility.Utility;
-import com.matcracker.PMManagerServers.Utility.UtilityColor;
-
+import com.matcracker.PMManagerServers.installer.ManagerInstaller;
+import com.matcracker.PMManagerServers.lang.BaseLang;
+import com.matcracker.PMManagerServers.settings.PluginManager;
+import com.matcracker.PMManagerServers.utility.Utility;
+import com.matcracker.PMManagerServers.utility.UtilityColor;
 
 public class Main implements PluginStarter, PluginInformation{
 	
@@ -49,7 +47,7 @@ public class Main implements PluginStarter, PluginInformation{
 	private void download() throws IOException {
 		Utility.cleanScreen();
 		System.out.println(title);
-		System.out.println("1- Download latest version {MCPE: 0.14.2}");
+		System.out.println("1- Download latest version {MCPE: 0.14.3}");
 		System.out.println("2- " + BaseLang.translate("pm.standard.back"));
 		int sel = Utility.readInt("Select version: ", null);
 		
@@ -60,19 +58,11 @@ public class Main implements PluginStarter, PluginInformation{
 			server = Utility.readInt("Select server: ", null);
 			
 			if(server <= UtilityServersAPI.getNumberServers()){
-				File imagical = new File("Utils" + File.separator + "PocketMine-MP_IMAGICALMINE.phar");
-				if(!imagical.exists()){
-					if(UtilityServersAPI.checkServersFile("Path", "downloadPath", -1)){
-						System.out.println("Downloading latest phar...");
-						Utility.openSoftware("url", link);
-						StatusAPI.setStatus(BaseLang.translate("pm.status.download"), server);
-						Utility.waitConfirm("ImagicalMine downloaded! Now install it!");
-						ManagerInstaller.moveDownloadedFiles(UtilityServersAPI.getDownloadPath(), "ImagicalMine.phar", "IMAGICALMINE");
-					}else
-						UtilityServersAPI.setDownloadPath(FileChooser.get("Select download path", "All", ""));
-				}else
-					Utility.waitConfirm("You've already downloaded this version");
-				
+					System.out.println("Downloading latest phar...");
+					Utility.downloadFile(link, "Utils");
+					ManagerInstaller.renameDownloadedFile("ImagicalMine.phar", "IMAGICALMINE");
+					StatusAPI.setStatus(BaseLang.translate("pm.status.download"), server);
+					Utility.waitConfirm("ImagicalMine downloaded! Now install it!");
 			}else
 				Utility.waitConfirm("Select an avaiable server");
 			
@@ -84,7 +74,7 @@ public class Main implements PluginStarter, PluginInformation{
 	private void install() {
 		Utility.cleanScreen();
 		System.out.println(title);
-		System.out.println("1- Install latest version {MCPE: 0.14.2}");
+		System.out.println("1- Install latest version {MCPE: 0.14.3}");
 		System.out.println("2- " + BaseLang.translate("pm.standard.back"));
 		int sel = Utility.readInt("Select version: ", null);
 		
@@ -111,7 +101,7 @@ public class Main implements PluginStarter, PluginInformation{
 						}else
 							Utility.waitConfirm(BaseLang.translate("pm.installer.pharNotFound"));
 					}else
-						Utility.waitConfirm(BaseLang.translate("pm.errors.pathNotFound"));	
+						Utility.waitConfirm(UtilityColor.COLOR_RED + BaseLang.translate("pm.errors.pathNotFound"));	
 				}else
 					Utility.waitConfirm("You don't download ImagicalMine! First download it!");
 				
@@ -137,7 +127,7 @@ public class Main implements PluginStarter, PluginInformation{
 
 	@Override
 	public String getAPIVersion() {
-		return "1.0";
+		return "1.1";
 	}
 
 	@Override
@@ -152,7 +142,7 @@ public class Main implements PluginStarter, PluginInformation{
 
 	@Override
 	public String getVersion() {
-		return "1.0";
+		return "1.0.1";
 	}
 
 }
